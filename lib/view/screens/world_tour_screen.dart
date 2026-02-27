@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class BottomSheetScreen extends StatelessWidget {
-  const BottomSheetScreen({super.key});
+class WorldTourScreen extends StatelessWidget {
+  const WorldTourScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
