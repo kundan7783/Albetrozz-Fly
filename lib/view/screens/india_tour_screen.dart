@@ -1,5 +1,6 @@
 import 'package:albetrozz_fly/data/location_data.dart';
 import 'package:flutter/material.dart';
+import '../../models/location_model.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/filter_button.dart';
 import '../widgets/tour_search_bar.dart';
@@ -15,11 +16,35 @@ class IndiaTourScreen extends StatefulWidget {
 
 class _IndiaTourScreenState extends State<IndiaTourScreen> {
   bool isStateSelected = true;
-  int currentIndex = 1;
-  String selectedZone = "South";
+  String selectedZone = "East";
   String selectedSeason = "Mar to Jun";
   final LocationData locationData = LocationData();
 
+  List<LocationModel> get zoneList {
+    switch (selectedZone) {
+      case "East":
+        return locationData.eastZone;
+      case "West":
+        return locationData.westZone;
+      case "North":
+        return locationData.northZone;
+      case "South":
+      default:
+        return locationData.southZone;
+    }
+  }
+
+  List<LocationModel> get seasonList {
+    switch (selectedSeason) {
+      case "Jul to Oct":
+        return locationData.seasonDataJulToOct;
+      case "Nov to Feb":
+        return locationData.seasonDataNovToFeb;
+      case "Mar to Jun":
+      default:
+        return locationData.seasonDataMarToJun;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -102,7 +127,7 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
                       : locationData.cities.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 1,
+                    childAspectRatio: 0.7,
                   ),
                   itemBuilder: (context, index) {
                     final item = isStateSelected
@@ -153,6 +178,11 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
                           isSelected: selectedZone == "South",
                           onTap: () => setState(() => selectedZone = "South"),
                         ),
+                        FilterButton(
+                          title: "North",
+                          isSelected: selectedZone == "North",
+                          onTap: () => setState(() => selectedZone = "North"),
+                        ),
                       ],
                     ),
                   ),
@@ -166,9 +196,9 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     scrollDirection: Axis.horizontal,
-                    itemCount: locationData.southZone.length,
+                    itemCount: zoneList.length,
                     itemBuilder: (context, index) {
-                      final item = locationData.southZone[index];
+                      final item = zoneList[index];
                       return Padding(
                         padding: const EdgeInsets.only(right: 12),
                         child: TourCard(
@@ -208,7 +238,7 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 70),
         
                       Row(
                         mainAxisAlignment:
@@ -251,10 +281,10 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
                           const EdgeInsets.symmetric(horizontal: 16),
                           scrollDirection: Axis.horizontal,
                           itemCount:
-                          locationData.seasonData.length,
+                          seasonList.length,
                           itemBuilder: (context, index) {
                             final item =
-                            locationData.seasonData[index];
+                            seasonList[index];
                             return Padding(
                               padding: const EdgeInsets.only(right: 12),
                               child: TourCard(

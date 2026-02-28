@@ -38,7 +38,7 @@ class StateCityToggle extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: selected ? AppColors.primary : Colors.transparent,
+            color: selected ? AppColors.blue : Colors.transparent,
             borderRadius: BorderRadius.circular(25),
           ),
           child: Center(
