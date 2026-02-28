@@ -37,6 +37,7 @@ dependencies:
   country_code_picker: ^3.4.1
   smooth_page_indicator: ^2.0.1
   provider: ^6.1.5+1
+  carousel_slider: any
 
 dev_dependencies:
   flutter_test:
