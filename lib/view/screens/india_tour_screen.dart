@@ -3,15 +3,21 @@ import 'dart:ffi';
 import 'package:albetrozz_fly/data/location_data.dart';
 import 'package:albetrozz_fly/data/speciality_data.dart';
 import 'package:albetrozz_fly/utils/app_colors.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../../models/location_model.dart';
+import '../widgets/blog_card.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/filter_button.dart';
 import '../widgets/interest_tour_card.dart';
+import '../widgets/podcast_card.dart';
 import '../widgets/speciality_card.dart';
+import '../widgets/testimonial_card.dart';
 import '../widgets/tour_search_bar.dart';
 import '../widgets/state_city_toggle.dart';
 import '../widgets/tour_card.dart';
+import '../widgets/trending_card.dart';
+import '../widgets/trending_tour_card.dart';
 
 class IndiaTourScreen extends StatefulWidget {
   const IndiaTourScreen({super.key});
@@ -23,6 +29,7 @@ class IndiaTourScreen extends StatefulWidget {
 class _IndiaTourScreenState extends State<IndiaTourScreen> {
   bool isStateSelected = true;
   String selectedZone = "East";
+  int currentIndex = 0;
   String selectedSeason = "Mar to Jun";
   String selectedInterest = "Honeymoon Special";
   final LocationData locationData = LocationData();
@@ -65,6 +72,7 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
         return specialityData.honeymoonInterest;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -382,73 +390,261 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
                 ],
               ),
             ),
-      Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 30),
-        color: const Color(0xFFE6F0FA),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              color: const Color(0xFFE6F0FA),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      "India Tour Packages By Interest",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
 
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                "India Tour Packages By Interest",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
+                  const SizedBox(height: 20),
+
+                  /// Filter Chips
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          FilterButton(
+                            title: "Honeymoon Special",
+                            isSelected: selectedInterest == "Honeymoon Special",
+                            onTap: () => setState(
+                              () => selectedInterest = "Honeymoon Special",
+                            ),
+                          ),
+                          FilterButton(
+                            title: "Women's Special",
+                            isSelected: selectedInterest == "Women's Special",
+                            onTap: () => setState(
+                              () => selectedInterest = "Women's Special",
+                            ),
+                          ),
+                          FilterButton(
+                            title: "Senior's Special",
+                            isSelected: selectedInterest == "Senior's Special",
+                            onTap: () => setState(
+                              () => selectedInterest = "Senior's Special",
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: height * 0.512,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: interestList.length,
+                      itemBuilder: (context, index) {
+                        final item = interestList[index];
+                        return InterestTourCard(
+                          image: item.image,
+                          title: item.title,
+                          subtitle: item.tours,
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-
-            const SizedBox(height: 20),
-
-            /// Filter Chips
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
+            SizedBox(
+              height: height*0.42,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FilterButton(
-                      title: "Honeymoon Special",
-                      isSelected: selectedInterest == "Honeymoon Special",
-                      onTap: () => setState(() => selectedInterest = "Honeymoon Special"),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        "Listen to Our Podcasts",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
-                    FilterButton(
-                      title: "Women's Special",
-                      isSelected: selectedInterest == "Women's Special",
-                      onTap: () => setState(() => selectedInterest = "Women's Special"),
-                    ),
-                    FilterButton(
-                      title: "Senior's Special",
-                      isSelected: selectedInterest == "Senior's Special",
-                      onTap: () => setState(() => selectedInterest = "Senior's Special"),
+                    const SizedBox(height: 20),
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: specialityData.podcasts.length,
+                        itemBuilder: (context, index) {
+                          final item = specialityData.podcasts[index];
+                          return PodcastCard(
+                            image: item["image"]!,
+                            title: item["title"]!,
+                            episodes: item["episodes"]!,
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: height*0.512,
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                scrollDirection: Axis.horizontal,
-                itemCount: interestList.length,
-                itemBuilder: (context, index) {
-                  final item = interestList[index];
-                  return InterestTourCard(
-                    image: item.image,
-                    title: item.title,
-                    subtitle: item.tours,
-                  );
-                },
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      "Popular Blogs  >",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 120,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: specialityData.blogs.length,
+                      itemBuilder: (context, index) {
+                        final item = specialityData.blogs[index];
+                        return BlogCard(
+                          image: item["image"]!,
+                          title: item["title"]!,
+                          time: item["time"]!,
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
+            _buildTestimonialSection(),
+            _buildTrendingSection()
           ],
         ),
-      )
-          ],
+      ),
+    );
+  }
+  Widget _buildTestimonialSection() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 30),
+      color: const Color(0xFFE6F0FA),
+      child: Column(
+        children: [
+          const Text(
+            "Hear It from Our Happy Travelers",
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20),
+
+          CarouselSlider.builder(
+            itemCount: specialityData.testimonials.length,
+            itemBuilder: (context, index, realIndex) {
+              final item = specialityData.testimonials[index];
+
+              return TestimonialCard(
+                image: item["image"]!,
+                title: item["title"]!,
+                description: item["description"]!,
+                name: item["name"]!,
+                date: item["date"]!,
+                rating: item["rating"]!,
+              );
+            },
+            options: CarouselOptions(
+              height: 320,
+              viewportFraction: 0.92,
+              enlargeCenterPage: true,
+              autoPlay: true,
+              autoPlayInterval: const Duration(seconds: 3),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTrendingSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          /// Title
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              "Explore What’s Trending",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 15),
+
+          /// Filter Chips
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _trendingChip("All Of India (324)", true),
+                  _trendingChip("Rajasthan (34)", false),
+                  _trendingChip("Himachal Pradesh (18)", false),
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 15),
+
+          /// Cards (NOT ListView — just Column)
+          Column(
+            children: specialityData.trendingTours
+                .map((tour) => TrendingTourCard(tour: tour))
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _trendingChip(String title, bool isSelected) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: Container(
+        padding:
+        const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.blue : Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+          ),
         ),
       ),
     );
