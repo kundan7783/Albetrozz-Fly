@@ -15,7 +15,7 @@ class LocationData {
     LocationModel(
       title: "Assam",
       tours: "18 Tours",
-      image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+      image: "https://plus.unsplash.com/premium_photo-1661828159832-19d8340f8e09",
     ),
     LocationModel(
       title: "Bihar",
@@ -356,7 +356,7 @@ class LocationData {
     LocationModel(
       title: "Shimla",
       tours: "20 Tours",
-      image: "https://images.unsplash.com/photo-1605648916319-9e7bb58b2d0a",
+      image: "https://plus.unsplash.com/premium_photo-1697730487072-c7c29e113007",
     ),
     LocationModel(
       title: "Darjeeling",
@@ -437,7 +437,7 @@ class LocationData {
     LocationModel(
       title: "Goa",
       tours: "30 Tours",
-      image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+      image: "https://plus.unsplash.com/premium_photo-1697729701846-e34563b06d47",
     ),
     LocationModel(
       title: "Kerala",
