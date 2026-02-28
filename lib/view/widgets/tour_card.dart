@@ -1,3 +1,4 @@
+import 'package:albetrozz_fly/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class TourCard extends StatelessWidget {
@@ -32,10 +33,7 @@ class TourCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           gradient: LinearGradient(
-            colors: [
-              Colors.black.withOpacity(0.5),
-              Colors.transparent
-            ],
+            colors: AppColors.cardLinearGradient,
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
           ),

@@ -6,4 +6,13 @@ class AppColors {
   static const white = Colors.white;
   static const black = Colors.black;
   static const blue = Colors.blue;
+
+
+
+  //Gradient
+ static final cardLinearGradient=[Colors.black.withOpacity(0.5),
+   Colors.transparent];
+ static final bgLinearGradient=[
+   Colors.transparent,Colors.black.withOpacity(0.2),
+   Colors.black.withOpacity(0.2)];
 }
