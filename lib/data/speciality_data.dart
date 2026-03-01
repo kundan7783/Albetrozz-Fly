@@ -172,7 +172,7 @@ class SpecialityData {
 
   List<Map<String, String>> testimonials = [
     {
-      "image": "assets/images/testi.jpg",
+      "image": "assets/images/luxurygrand.jpg",
       "title": "Munnar Cochin",
       "description":
       "Hello Veena World... \n So this is my first tour...",
@@ -190,7 +190,7 @@ class SpecialityData {
       "rating": "5.0"
     },
     {
-      "image": "assets/images/testi.jpg",
+      "image": "assets/images/rajsthan.jpg",
       "title": "Munnar Cochin",
       "description":
       "Hello Veena World... \n So this is my first tour...",
@@ -199,7 +199,7 @@ class SpecialityData {
       "rating": "5.0"
     },
     {
-      "image": "assets/images/testi.jpg",
+      "image": "assets/images/rajsthan1.jpg",
       "title": "Munnar Cochin",
       "description":
       "Hello Veena World... \n So this is my first tour...",
@@ -232,5 +232,27 @@ class SpecialityData {
       price: "₹32,000",
       emi: "₹1,020/mo",
     ),
+    TrendingModel(
+      image: "https://images.unsplash.com/photo-1622194993926-1801586d460f",
+      title: "Bihar Gaya",
+      days: "4 Days",
+      cities: "2 Cities",
+      dates: "1 Dept. dates from 2 Cities",
+      highlights:
+      "Mandawa Fort, Morarka Haveli, Podar Haveli Museum",
+      price: "₹25,000",
+      emi: "₹843/mo",
+    ),
+    TrendingModel(
+      image: "https://images.unsplash.com/photo-1599661046289-e31897846e41",
+      title: "Rajsthan",
+      days: "5 Days",
+      cities: "3 Cities",
+      dates: "2 Dept. dates",
+      highlights: "Tsomgo Lake, MG Road, Batasia Loop",
+      price: "₹32,000",
+      emi: "₹1,020/mo",
+    ),
+
   ];
 }

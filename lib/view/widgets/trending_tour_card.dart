@@ -12,7 +12,7 @@ class TrendingTourCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.08),
@@ -27,9 +27,15 @@ class TrendingTourCard extends StatelessWidget {
           /// Image Section
           Stack(
             children: [
-              ClipRRect(
-                borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(25)),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                  gradient: LinearGradient(colors: [
+                    Colors.black26,
+                    Colors.black26,
+                    Colors.transparent
+                  ],begin: AlignmentGeometry.topCenter,end: AlignmentGeometry.bottomCenter)
+                ),
                 child: Image.network(
                   tour.image,
                   height: 230,
@@ -78,8 +84,8 @@ class TrendingTourCard extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     const Text(
-                      "All Inclusive",
-                      style: TextStyle(color: Colors.blue),
+                      "All Inclusive !",
+                      style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w600),
                     )
                   ],
                 ),
@@ -94,11 +100,8 @@ class TrendingTourCard extends StatelessWidget {
                     _infoPill(Icons.location_on, tour.cities),
                   ],
                 ),
-
                 const SizedBox(height: 10),
-
                 _infoPill(Icons.event_available, tour.dates),
-
                 const SizedBox(height: 12),
 
                 const Text("Tour Highlights",
@@ -121,7 +124,7 @@ class TrendingTourCard extends StatelessWidget {
                       CrossAxisAlignment.start,
                       children: [
                         Text(
-                          tour.price,
+                          "${tour.price}/",
                           style: const TextStyle(
                               fontSize: 20,
                               fontWeight:
@@ -139,7 +142,7 @@ class TrendingTourCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
                         borderRadius:
-                        BorderRadius.circular(20),
+                        BorderRadius.circular(5),
                       ),
                       child: Text(
                         "EMI from: ${tour.emi}",
@@ -155,9 +158,10 @@ class TrendingTourCard extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton(
+                      child: OutlinedButton.icon(
                         onPressed: () {},
-                        child: const Text("Compare"),
+                        style: OutlinedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(10))),
+                         label: const Text("Compare",style: TextStyle(color: Colors.black),),icon: Icon(Icons.compare_arrows_outlined,color: Colors.black,),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -166,9 +170,10 @@ class TrendingTourCard extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                           Colors.yellow[700],
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(10))
                         ),
                         onPressed: () {},
-                        child: const Text("Book now"),
+                        child: const Text("Book now",style: TextStyle(color: Colors.black),),
                       ),
                     ),
                   ],
@@ -188,6 +193,7 @@ class TrendingTourCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.blue)
       ),
       child: Text(text,
           style: const TextStyle(fontSize: 12)),
@@ -214,9 +220,10 @@ class TrendingTourCard extends StatelessWidget {
       const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
+        mainAxisSize: .min,
         children: [
           Icon(icon, size: 14),
           const SizedBox(width: 5),
