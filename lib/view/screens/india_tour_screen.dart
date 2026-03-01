@@ -16,7 +16,6 @@ import '../widgets/testimonial_card.dart';
 import '../widgets/tour_search_bar.dart';
 import '../widgets/state_city_toggle.dart';
 import '../widgets/tour_card.dart';
-import '../widgets/trending_card.dart';
 import '../widgets/trending_tour_card.dart';
 
 class IndiaTourScreen extends StatefulWidget {
@@ -32,6 +31,7 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
   int currentIndex = 0;
   String selectedSeason = "Mar to Jun";
   String selectedInterest = "Honeymoon Special";
+  String selectedTrending = "All Of India (324)";
   final LocationData locationData = LocationData();
   final SpecialityData specialityData = SpecialityData();
 
@@ -463,7 +463,7 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
               ),
             ),
             SizedBox(
-              height: height*0.42,
+              height: height * 0.42,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Column(
@@ -535,12 +535,27 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
               ),
             ),
             _buildTestimonialSection(),
-            _buildTrendingSection()
+            _buildTrendingSection(),
+            const SizedBox(height: 60),
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                "Explore 300+ Tours >",
+                style: TextStyle(
+                  color: Colors.blueAccent,
+                  decoration: TextDecoration.underline,
+                  fontSize: 21,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
     );
   }
+
   Widget _buildTestimonialSection() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 30),
@@ -549,9 +564,7 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
         children: [
           const Text(
             "Hear It from Our Happy Travelers",
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
 
@@ -588,16 +601,12 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           /// Title
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               "Explore What’s Trending",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
 
@@ -610,9 +619,31 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _trendingChip("All Of India (324)", true),
-                  _trendingChip("Rajasthan (34)", false),
-                  _trendingChip("Himachal Pradesh (18)", false),
+                  FilterButton(
+                    title: "All Of India (324)",
+                    isSelected: selectedTrending == "All Of India (324)",
+                    onTap: () =>
+                        setState(() => selectedTrending = "All Of India (324)"),
+                  ),
+                  FilterButton(
+                    title: "Rajasthan (34)",
+                    isSelected: selectedTrending == "Rajasthan (34)",
+                    onTap: () =>
+                        setState(() => selectedTrending = "Rajasthan (34)"),
+                  ),
+                  FilterButton(
+                    title: "Himachal Pradesh (18)",
+                    isSelected: selectedTrending == "Himachal Pradesh (18)",
+                    onTap: () => setState(
+                      () => selectedTrending = "Himachal Pradesh (18)",
+                    ),
+                  ),
+                  FilterButton(
+                    title: "Bihar (54)",
+                    isSelected: selectedTrending == "Bihar (54)",
+                    onTap: () =>
+                        setState(() => selectedTrending = "Bihar (54)"),
+                  ),
                 ],
               ),
             ),
@@ -627,25 +658,6 @@ class _IndiaTourScreenState extends State<IndiaTourScreen> {
                 .toList(),
           ),
         ],
-      ),
-    );
-  }
-  Widget _trendingChip(String title, bool isSelected) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 10),
-      child: Container(
-        padding:
-        const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: Text(
-          title,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-          ),
-        ),
       ),
     );
   }

@@ -10,7 +10,8 @@ class AppColors {
 
 
   //Gradient
- static final cardLinearGradient=[Colors.black.withOpacity(0.5),
+ static final cardLinearGradient=[
+   Colors.black.withOpacity(0.5),
    Colors.transparent];
  static final bgLinearGradient=[
    Colors.transparent,Colors.black.withOpacity(0.2),
