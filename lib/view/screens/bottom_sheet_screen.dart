@@ -15,8 +15,6 @@ class BottomSheetScreen extends StatefulWidget {
 
 class _BottomSheetScreenState extends State<BottomSheetScreen> {
   int _selectedIndex = 0;
-
-  // 👇 Screens list
   final List<Widget> _screens = const [
     HomeScreen(),
     IndiaTourScreen(),
@@ -24,13 +22,11 @@ class _BottomSheetScreenState extends State<BottomSheetScreen> {
     EnquireScreen(),
     MoreScreen(),
   ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,18 +35,14 @@ class _BottomSheetScreenState extends State<BottomSheetScreen> {
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 6),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
+          decoration:  BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Colors.grey.shade400,
+                width: 1,
+              ),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 10,
-              )
-            ],
+            color: Colors.white,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -69,7 +61,6 @@ class _BottomSheetScreenState extends State<BottomSheetScreen> {
 
   Widget _buildItem(IconData icon, String label, int index) {
     bool isSelected = _selectedIndex == index;
-
     return GestureDetector(
       onTap: () => _onItemTapped(index),
       child: Column(

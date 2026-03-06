@@ -1,6 +1,12 @@
+import 'package:albetrozz_fly/view/screens/contact_us_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
+import '../../models/city_tour.dart';
+import '../../models/podcast.dart';
+import '../../models/testimonial.dart';
+import '../../models/tour_model.dart';
+import '../../models/tour_package.dart';
+import '../../models/travelInsight.dart';
 import '../widgets/option_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,6 +18,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final PageController _pageController = PageController();
+  final List<Map<String, dynamic>> specialityTours = [
+    {'name': "Women's Special", 'departures': '103 Departures', 'image': 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400'},
+    {'name': 'Family Tour Packages', 'departures': '1518 Departures', 'image': 'https://images.unsplash.com/photo-1607748862156-7c548e7e98f4?w=400'},
+    {'name': "Couples Getaway", 'departures': '89 Departures', 'image': 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400'},
+    {'name': "Seniors' Special", 'departures': '51 Departures', 'image': 'https://images.unsplash.com/photo-1581579186913-45ac3e6efe93?w=400'},
+    {'name': 'Honeymoon Special', 'departures': '21 Departures', 'image': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400'},
+    {'name': 'Luxury Group Tours', 'departures': '2 Departures', 'image': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400'},
+  ];
   final List<Map<String, String>> travelData = [
     {
       "image":
@@ -62,6 +76,13 @@ class _HomeScreenState extends State<HomeScreen> {
       "price": "₹1,25,000",
     },
   ];
+  final List<String> continents = const [
+    "Europe",
+    "Australia & NZ",
+    "Japan",
+    "Africa",
+    "America",
+  ];
   final List<Map<String, String>> tours = [
     {
       "image":
@@ -80,6 +101,22 @@ class _HomeScreenState extends State<HomeScreen> {
       "price": "₹3,40,000",
     },
   ];
+  final List<Map<String, String>> destinations = [
+    {
+      "image":
+          "https://images.pexels.com/photos/208701/pexels-photo-208701.jpeg",
+      "title": "Europe",
+      "tours": "215 Tours",
+      "dept": "474 Dept.",
+    },
+    {
+      "image":
+          "https://images.pexels.com/photos/753626/pexels-photo-753626.jpeg",
+      "title": "South East Asia",
+      "tours": "77 Tours",
+      "dept": "120 Dept.",
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.grey.shade200,
       body: Column(
         children: [
-          /// App Baar hai ye
+          /// App Bar
           Container(
             padding: const EdgeInsets.only(
               top: 50,
@@ -95,13 +132,14 @@ class _HomeScreenState extends State<HomeScreen> {
               right: 16,
               bottom: 10,
             ),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
+            decoration:  BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey.shade400, // light grey
+                  width: 1,
+                ),
               ),
-              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8)],
+              color: Colors.white,
             ),
             child: Column(
               children: [
@@ -128,7 +166,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     _topIcon(Icons.notifications_none),
                     const SizedBox(width: 10),
-                    _topIcon(Icons.call_outlined),
+                    GestureDetector(  onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ContactUsScreen(),));
+                    }, child: _topIcon(Icons.call_outlined)),
                   ],
                 ),
                 const SizedBox(height: 15),
@@ -160,8 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-
-          /// ---------------------------->
+          /// ScrollView All Code
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -531,7 +570,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                 /// Curated Card (right side)
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 35.0),
+                                  padding: const EdgeInsets.only(bottom: 50.0),
                                   child: Container(
                                     width: 260, // 👈 chota width
                                     padding: const EdgeInsets.all(20),
@@ -711,7 +750,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 24),
                     decoration: const BoxDecoration(
-                      color: Color(0xFFDCE6F1), // light blue background
+                      color: Color(0xFFd6edff), // light blue background
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -733,9 +772,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             padding: const EdgeInsets.symmetric(horizontal: 16),
-                            itemCount: tours.length,
+                            itemCount: destinations.length,
                             itemBuilder: (context, index) {
-                              final data = tours[index];
+                              final data = destinations[index];
                               return _destinationItem(data);
                             },
                           ),
@@ -743,6 +782,342 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
+                  _buildSpecialitySection(),
+                  Container(
+                    height: 500,
+                    // thoda extra height de diya buttons ke liye
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    color: Colors.white,
+                    // 👈 poora white section
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// Title
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            "Tour Packages from Delhi",
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        /// Horizontal List
+                        SizedBox(
+                          height: 400,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            itemCount: tourPackages.length,
+                            itemBuilder: (context, index) {
+                              return _tourPackageCard(tourPackages[index]);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 50),
+                    color: const Color(0xFF071e2e),
+                    child: Column(
+                      children: [
+                        /// Title
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: const Text(
+                            "What Makes Veena World a Trusted Choice",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 40),
+
+                        /// 1️⃣ Happy Guests
+                        const Text(
+                          "9,24,761",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        const Text(
+                          "Happy Guests",
+                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        /// 2️⃣ Highlighted Item (Yellow + Big)
+                        const Text(
+                          "72,238",
+                          style: TextStyle(
+                            fontSize: 36, // 👈 Bigger
+                            fontWeight: FontWeight.bold,
+                            color: Colors.yellow, // 👈 Yellow
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        const Text(
+                          "Tours Completed",
+                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        /// 3️⃣ Tours Experts
+                        const Text(
+                          "350+",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        const Text(
+                          "Tours Experts",
+                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        /// 4️⃣ Destinations
+                        const Text(
+                          "1009+",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        const Text(
+                          "Tours Destinations",
+                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// Title
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            "Explore tour packages from",
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        /// Horizontal List
+                        SizedBox(
+                          height: 260,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            itemCount: cityTours.length,
+                            itemBuilder: (context, index) {
+                              return _cityCard(cityTours[index]);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    color: const Color(0xFFD7E3ED), // light blue bg
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Hear It from Our Happy Travelers",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        SizedBox(
+                          height: 420,
+                          child: PageView.builder(
+                            controller: PageController(viewportFraction: 0.88),
+                            itemCount: testimonials.length,
+                            itemBuilder: (context, index) {
+                              return _testimonialCard(testimonials[index]);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            "Listen to Our Podcasts",
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          height: 300,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            itemCount: podcasts.length,
+                            itemBuilder: (context, index) {
+                              return _podcastCard(podcasts[index]);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    color: const Color(0xFFD7E3ED), // light blue bg
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Discover Would",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          height: 40,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            itemCount: continents.length,
+                            itemBuilder: (context, index) {
+
+                              bool isSelected = index == 0;
+
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 6),
+                                child: Center(   // ✅ important
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 8),
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? Colors.blue
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: isSelected
+                                            ? Colors.blue
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      continents[index],
+                                      style: TextStyle(
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.black87,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+
+                        /// Horizontal List
+                        SizedBox(
+                          height: 400,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            itemCount: tourPackages.length,
+                            itemBuilder: (context, index) {
+                              return _tourPackageCard(tourPackages[index]);
+                            },
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  ),
+
+                  Container(
+                    color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16 , vertical: 25),
+                          child: Text(
+                            "Travel Insights & Inspiration",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+
+
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          itemCount: travelInsights.length,
+                          itemBuilder: (context, index) {
+                            return _travelInsightCard(travelInsights[index]);
+                          },
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
@@ -752,6 +1127,239 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  ///-----------------------------------------> All Custom Design <-----------------------------------///
+
+  Widget _travelInsightCard(TravelInsight insight) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 24),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(18),
+            child: Image.network(
+              insight.image,
+              height: 125,
+              width: 125,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8F0FE), // light blue background
+                    borderRadius: BorderRadius.circular(30), // more rounded
+                  ),
+                  child: Text(
+                    insight.city,
+                    style: const TextStyle(
+                      color: Color(0xFF1A73E8), // blue text
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  insight.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 7),
+                Text(
+                  "• ${insight.meta}",
+                  style: TextStyle(
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _tourPackageCard(TourPackage tour) {
+    return Container(
+      width: 352,
+      margin: const EdgeInsets.only(right: 16),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// Image Section
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Stack(
+              children: [
+                Image.network(
+                  tour.image,
+                  height: 210,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+
+                /// Top Tags
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: Row(
+                    children: [
+                      _tag("Group Tour"),
+                      const SizedBox(width: 6),
+                      _darkTag("Family"),
+                      const SizedBox(width: 6),
+                      _darkTag("5 ★ (3)"),
+                    ],
+                  ),
+                ),
+
+                /// Favorite Icon
+                const Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Icon(Icons.favorite_border, color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          /// Title + All Inclusive
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  tour.title,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const Text(
+                "All Inclusive",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 4),
+              const Icon(Icons.info_outline, size: 16, color: Colors.blue),
+            ],
+          ),
+
+          const SizedBox(height: 6),
+
+          Text(tour.duration, style: const TextStyle(color: Colors.black54)),
+
+          const SizedBox(height: 10),
+
+          /// Price Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "${tour.price} on twin sharing",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  "EMI from ${tour.emi}",
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ),
+            ],
+          ),
+
+          const Spacer(),
+
+          /// Buttons
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text("Enquire Now"),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.yellow,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text("Book Online"),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _tag(String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(text, style: const TextStyle(fontSize: 12)),
+    );
+  }
+  Widget _darkTag(String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.black87,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 12, color: Colors.white),
+      ),
+    );
+  }
   Widget _topIcon(IconData icon) {
     return Container(
       height: 45,
@@ -763,12 +1371,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Icon(icon),
     );
   }
-
-  Widget _destinationCard({
-    required String image,
-    required String title,
-    required String subtitle,
-  }) {
+  Widget _destinationCard({required String image, required String title, required String subtitle,}) {
     return SizedBox(
       width: 140,
       child: Column(
@@ -800,7 +1403,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
   Widget _tourCard(Map<String, String> tour) {
     return Container(
       width: 280,
@@ -810,9 +1412,6 @@ class _HomeScreenState extends State<HomeScreen> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.grey),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -906,7 +1505,337 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+  Widget _cityCard(CityTour tour) {
+    return Container(
+      width: 280,
+      margin: const EdgeInsets.only(right: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// Image Card
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Stack(
+              children: [
+                Image.network(
+                  tour.image,
+                  height: 180,
+                  width: 280,
+                  fit: BoxFit.cover,
+                ),
 
+                /// Bottom Gradient
+                Positioned.fill(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black45,
+                          Colors.black87,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                /// Text Overlay
+                Positioned(
+                  left: 16,
+                  bottom: 16,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Tour Packages From",
+                        style: TextStyle(color: Colors.white70, fontSize: 14),
+                      ),
+                      Text(
+                        tour.city,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          /// Tours Info
+          Text(
+            tour.tours,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+
+          const SizedBox(height: 6),
+
+          /// Price
+          Row(
+            children: [
+              const Text(
+                "Starts from ",
+                style: TextStyle(color: Colors.black54),
+              ),
+              Text(
+                tour.price,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _podcastCard(Podcast podcast) {
+    return Container(
+      width: 260,
+      margin: const EdgeInsets.only(right: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey)
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          /// Image Section
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
+            child: Stack(
+              children: [
+                Image.network(
+                  podcast.image,
+                  height: 180,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+
+                /// Gradient
+                Positioned.fill(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black54,
+                          Colors.black87,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                /// Language Badge
+                Positioned(
+                  left: 16,
+                  bottom: 16,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      podcast.language,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+
+                /// Play Button
+                Positioned(
+                  right: 16,
+                  bottom: 16,
+                  child: Container(
+                    height: 45,
+                    width: 45,
+                    decoration: const BoxDecoration(
+                      color: Colors.yellow,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.play_arrow,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          /// Bottom White Section
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  podcast.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                Text(
+                  podcast.episodes,
+                  style: const TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _testimonialCard(Testimonial data) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(25),
+        child: Stack(
+          children: [
+            /// Image
+            Image.network(
+              data.image,
+              height: 420,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+
+            /// Bottom Gradient
+            Positioned.fill(
+              child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black54,
+                      Colors.black87,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            /// Content
+            Positioned(
+              left: 20,
+              right: 20,
+              bottom: 20,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Tag
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Text("Short Trips"),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  /// Location
+                  Text(
+                    data.location,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const SizedBox(height: 6),
+
+                  /// Description
+                  Text(
+                    data.description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+
+                  const SizedBox(height: 6),
+
+                  const Text(
+                    "Read More",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  /// Name + Rating
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${data.name} • Travelled in ${data.date}",
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            data.rating,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.orange,
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
   Widget _destinationItem(Map<String, String> data) {
     return Container(
       width: 250,
@@ -921,7 +1850,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Image.network(
                   data["image"]!,
-                  height: 200,
+                  height: 220,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -957,9 +1886,91 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 12),
 
           /// Tours + Departure
-          Text(
-            "${data["tours"]} • ${data["dept"]}",
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+          Center(
+            child: Text(
+              "${data["tours"]} • ${data["dept"]}",
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _buildSpecialitySection() {
+    return Container(
+      color: const Color(0xFF0d1b2e),
+      padding: const EdgeInsets.only(top: 24, bottom: 28),
+      child: Column(
+        children: [
+          const Text(
+            'Speciality Tours',
+            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 18),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 20,
+              childAspectRatio: 0.88,
+            ),
+            itemCount: specialityTours.length,
+            itemBuilder: (context, i) {
+              final item = specialityTours[i];
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.network(
+                            item['image'],
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Container(color: Colors.grey.shade700),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [Colors.transparent, Colors.black.withOpacity(0.65)],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 10,
+                            left: 10,
+                            right: 10,
+                            child: Text(
+                              item['name'],
+                              style: const TextStyle(
+                                color: Color(0xFFFFD700),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4),
+                    child: Text(
+                      item['departures'],
+                      style: const TextStyle(color: Colors.white60, fontSize: 12),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),
