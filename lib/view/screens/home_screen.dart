@@ -1,3 +1,4 @@
+import 'package:albetrozz_fly/view/screens/booking_screen.dart';
 import 'package:albetrozz_fly/view/screens/contact_us_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -173,30 +174,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 15),
                 Center(
-                  child: Container(
-                    height: 50,
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(color: Colors.black12, blurRadius: 8),
-                      ],
-                    ),
-                    child: TextField(
-                      textAlignVertical: TextAlignVertical.center,
-                      // vertical center
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Start your search",
-                        prefixIcon: const Icon(Icons.search),
-                        contentPadding: const EdgeInsets.only(
-                          top: 0,
-                        ), // text top padding adjust
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: SearchBar(
+                      hintText: "Search for products",
+                      leading: const Icon(Icons.search),
+                      elevation: const MaterialStatePropertyAll(2),
+                      backgroundColor: const MaterialStatePropertyAll(Colors.white),
+                      padding: const MaterialStatePropertyAll(
+                        EdgeInsets.symmetric(horizontal: 16),
+                      ),
+                      shape: MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: const BorderSide(color: Colors.grey),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -310,24 +306,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ],
                                           ),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: const [
-                                              Text(
-                                                "Book now",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black87,
-                                                  fontSize: 16,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => BookingScreen(),));
+                                            },
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: const [
+                                                Text(
+                                                  "Book now",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black87,
+                                                    fontSize: 16,
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(width: 8),
-                                              Icon(
-                                                Icons.arrow_forward,
-                                                color: Colors.black87,
-                                                size: 18,
-                                              ),
-                                            ],
+                                                SizedBox(width: 8),
+                                                Icon(
+                                                  Icons.arrow_forward,
+                                                  color: Colors.black87,
+                                                  size: 18,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ],
